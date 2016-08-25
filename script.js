@@ -1,36 +1,40 @@
-var f = [];
+var factorial_results = [];
 
 function factorial(n) {
   if (n == 0 || n == 1)
     return 1;
-  if (f[n] > 0)
-    return f[n];
-  return f[n] = factorial(n - 1) * n;
+  if (factorial_results[n] > 0)
+    return factorial_results[n];
+  return factorial_results[n] = factorial(n - 1) * n;
 };
 
-function targetPermutation(digits, target) {
+function targetPermutation(digits, target, working_cb) {
   var permutation = 1;
   var permuted = [];
 
   while (digits.length > 0) {
-    //console.log("Figuring out the " + 9-digits.legth + ordinal(9-digits.length) + " digit");
     var delta = target - permutation;
-    //console.log(delta + " permutations remaining to target");
-    var tail_permutations = factorial(digits.length - 1);
-    //console.log("tail permits " + tail_permutations + " permutations");
+    var tail_length = digits.length - 1;
+    var tail_permutations = factorial(tail_length);
     var selected_digit_index = Math.floor(delta / tail_permutations);
-    //console.log("therefore we need " + selected_digit_index + " to approach target and choose this item from tail");
     permuted.push(digits.splice(selected_digit_index, 1)[0]);
+  
+    if(working_cb) working_cb([
+      permutation,
+      selected_digit_index,
+      tail_length,
+      digits,
+      permuted]);
+
     permutation += selected_digit_index * tail_permutations;
-    //console.log("We are now up to permutation number " + permutation);
   }
 
   return permuted;
-}
+};
 
 function getDigits() {
   return [1, 2, 3, 4, 5, 6, 7, 8, 9];
-}
+};
 
 function calculatePermutation() {
   var target = parseInt($("#target_input").val());
@@ -38,11 +42,49 @@ function calculatePermutation() {
   var permutedString = "input error";
 
   if (inputOk) {
-    var permuted = targetPermutation(getDigits(), target);
+    clearWorking();
+    var permuted = targetPermutation(getDigits(), target, showWorking);
     permutedString = permuted.join('');
   }
 
   displayResult($("#target_input").val(), permutedString, "calculated", inputOk);
+};
+
+function clearWorking() {
+  $("#working-content").empty();
+  $("#working-content").prepend('<p class="text-right text-muted">'
+    + 'start with digits [' + getDigits().join(',') + ']</p>');  
+};
+
+var showWorking = function(args) {
+  var permutation = args[0];
+  var sdi = args[1];
+  var tail_length = args[2];
+  var tail_permutations = factorial(tail_length);
+  var digits = args[3];
+  var permuted = args[4];
+
+  $("#working-content").prepend('<p class="text-muted">'
+    + 'from permutation number ' + permutation + ', '
+    + '<br/>'
+    + 'we promote the ' + (sdi + 1) + ordinal(sdi + 1)
+    + ' digit from the sorted list of length ' + (tail_length + 1) + ','
+    + '<br/>'
+    + 'because the remaining list of ' + tail_length
+    + ' digits has ' + tail_permutations + ' permutations,'
+    + '<br/>'
+    + 'and the first ' + sdi + ' lots of ' + tail_permutations
+    + ' is an additional ' + (sdi * tail_permutations) + ' permutations,'
+    + '<br/>'
+    + 'which takes us (just under target) to permutation number '
+    + (permutation + sdi * tail_permutations) + ','
+    + '</p>');
+
+  $("#working-content").prepend('<p class="text-right text-muted">'
+    + 'promote ' + (sdi + 1) + ordinal(sdi + 1) + ' digit -> '  
+    + permuted.join('')
+    + ' [' + digits.join(',') + ']'
+    + '</p>');
 };
 
 function displayResult(target, permutedString, action, success) {
@@ -59,13 +101,13 @@ function ordinal(number) {
   if (number % 10 == 2) return "nd";
   if (number % 10 == 3) return "rd";
   return "th"
-}
+};
 
 function addHistory(target, permutedString, action, success) {
-  if (!$.trim($("#history-data").html())) {
+  if (!$.trim($("#history-content").html())) {
     $("#history-header").append('<h2>history</h2>');
   }
-  $("#history-data").prepend('<p class="text-right '
+  $("#history-content").prepend('<p class="text-right '
     + (success ? 'bg-success' : 'bg-danger') + '">'
     + action + " "
     + target + ordinal(target)
@@ -81,7 +123,7 @@ function testCase(target, expectedString) {
     permutedString + '<br/>vs ' + expectedString,
     "tested",
     pass); 
-}
+};
 
 function test() {
   // First permutation

@@ -1,3 +1,7 @@
 .input-top-margin {
   margin-top:10px;
 }
+
+#working-content p {
+  font-size:12px;
+}
