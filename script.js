@@ -41,8 +41,9 @@ function calculatePermutation() {
   var inputOk = !isNaN(target) && target > 0 && target <= factorial(9);
   var permutedString = "input error";
 
+  clearWorking();
+  
   if (inputOk) {
-    clearWorking();
     var permuted = targetPermutation(getDigits(), target, showWorking);
     permutedString = permuted.join('');
   }
@@ -70,11 +71,12 @@ var showWorking = function(args) {
     + 'we promote the ' + (sdi + 1) + ordinal(sdi + 1)
     + ' digit from the sorted list of length ' + (tail_length + 1) + ','
     + '<br/>'
-    + 'because the remaining list of ' + tail_length
-    + ' digits has ' + tail_permutations + ' permutations,'
+    + 'because the remaining list of length ' + tail_length
+    + ' can be permuted in ' + tail_permutations + ' ways,'
     + '<br/>'
-    + 'and the first ' + sdi + ' lots of ' + tail_permutations
-    + ' is an additional ' + (sdi * tail_permutations) + ' permutations,'
+    + 'and promoting from the 1st up to the ' + sdi + ordinal(sdi) + ' digit adds '
+    + sdi + ' * ' + tail_permutations + ' = ' + (sdi * tail_permutations)
+    + ' permutations,'
     + '<br/>'
     + 'which takes us (just under target) to permutation number '
     + (permutation + sdi * tail_permutations) + ','
