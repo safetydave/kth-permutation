@@ -54,9 +54,9 @@ function calculatePermutation() {
 function clearWorking() {
   $("#working-content").empty();
   $("#working-content").prepend('<pre class="text-muted">'
-    + 'permutation # 1</pre>');
+    + '#      1 permutation</pre>');
   $("#working-content").prepend('<pre class="text-right text-muted">'
-    + 'digits [' + getDigits().join(',') + ']</pre>');
+    + 'sorted digits [' + getDigits().join(',') + ']</pre>');
 };
 
 function getXs(num) {
@@ -65,6 +65,10 @@ function getXs(num) {
     arr.push('x');
   }
   return arr;
+}
+
+function padPerm(perm) {
+  return ('      ' + perm).slice(-6);
 }
 
 var showWorking = function(args) {
@@ -76,20 +80,20 @@ var showWorking = function(args) {
   var permuted = args[4];
 
   $("#working-content").prepend('<pre class="text-muted">'
-    + 'permutation # '
-    + (permutation + sdi * tail_permutations)
+    + '# '
+    + padPerm(permutation + sdi * tail_permutations)
+    + ' permutation'
     + '<br/>'
-    + ((sdi > 0) ? (
-      'first ' + sdi + ' promotions add '
-      + sdi + '*' + tail_permutations + ' = ' + (sdi * tail_permutations)
-      + '<br/>') : '')
+    + '+ ' + padPerm(sdi * tail_permutations) + ' = '
+    + tail_permutations + ' * ' + sdi + ' promotions'
+    + '<br/>'
+    + '           ' + tail_permutations + ' each '
     + 'x [' + getXs(tail_length).join(',') + ']'
-    + ' permutes ' + tail_permutations + ' ways'
     + '</pre>');
 
   $("#working-content").prepend('<pre class="text-right text-muted">'
     + 'promote ' + (sdi + 1) + ordinal(sdi + 1) + ' digit -> '  
-    + permuted.join('')
+    + '<strong>' + permuted.join('') + '</strong>'
     + ' [' + digits.join(',') + ']'
     + '</pre>');
 };
