@@ -53,8 +53,8 @@ function calculatePermutation() {
 
 function clearWorking() {
   $("#working-content").empty();
-  $("#working-content").prepend('<p class="text-right text-muted">'
-    + 'start with digits [' + getDigits().join(',') + ']</p>');  
+  $("#working-content").prepend('<pre class="text-right text-muted">'
+    + 'start with digits [' + getDigits().join(',') + ']</pre>');
 };
 
 var showWorking = function(args) {
@@ -65,7 +65,7 @@ var showWorking = function(args) {
   var digits = args[3];
   var permuted = args[4];
 
-  $("#working-content").prepend('<p class="text-muted">'
+  $("#working-content").prepend('<pre class="text-muted">'
     + 'from permutation number ' + permutation + ', '
     + '<br/>'
     + 'we promote the ' + (sdi + 1) + ordinal(sdi + 1)
@@ -80,13 +80,13 @@ var showWorking = function(args) {
     + '<br/>'
     + 'which takes us (just under target) to permutation number '
     + (permutation + sdi * tail_permutations) + ','
-    + '</p>');
+    + '</pre>');
 
-  $("#working-content").prepend('<p class="text-right text-muted">'
+  $("#working-content").prepend('<pre class="text-right text-muted">'
     + 'promote ' + (sdi + 1) + ordinal(sdi + 1) + ' digit -> '  
     + permuted.join('')
     + ' [' + digits.join(',') + ']'
-    + '</p>');
+    + '</pre>');
 };
 
 function displayResult(target, permutedString, action, success) {
@@ -109,12 +109,12 @@ function addHistory(target, permutedString, action, success) {
   if (!$.trim($("#history-content").html())) {
     $("#history-header").append('<h2>history</h2>');
   }
-  $("#history-content").prepend('<p class="text-right '
+  $("#history-content").prepend('<pre class="text-right small '
     + (success ? 'bg-success' : 'bg-danger') + '">'
     + action + " "
     + target + ordinal(target)
     + ' permutation is ' + permutedString
-    + '</p>');
+    + '</pre>');
 };
 
 function testCase(target, expectedString) {
@@ -122,7 +122,7 @@ function testCase(target, expectedString) {
   permutedString = permuted.join('');
   var pass = permutedString == expectedString;
   addHistory(target,
-    permutedString + '<br/>vs ' + expectedString,
+    permutedString + '<br/>vs expected ' + expectedString,
     "tested",
     pass); 
 };
@@ -138,5 +138,5 @@ function test() {
   testCase(3, "123456879");
 
   // 100000th permutation
-  testCase(100000, "358926471");
+  //testCase(100000, "358926471");
 };
