@@ -53,9 +53,19 @@ function calculatePermutation() {
 
 function clearWorking() {
   $("#working-content").empty();
+  $("#working-content").prepend('<pre class="text-muted">'
+    + 'permutation # 1</pre>');
   $("#working-content").prepend('<pre class="text-right text-muted">'
-    + 'start with digits [' + getDigits().join(',') + ']</pre>');
+    + 'digits [' + getDigits().join(',') + ']</pre>');
 };
+
+function getXs(num) {
+  var arr = [];
+  for (var i = 0; i < num; i++) {
+    arr.push('x');
+  }
+  return arr;
+}
 
 var showWorking = function(args) {
   var permutation = args[0];
@@ -66,20 +76,15 @@ var showWorking = function(args) {
   var permuted = args[4];
 
   $("#working-content").prepend('<pre class="text-muted">'
-    + 'from permutation number ' + permutation + ', '
+    + 'permutation # '
+    + (permutation + sdi * tail_permutations)
     + '<br/>'
-    + 'we promote the ' + (sdi + 1) + ordinal(sdi + 1)
-    + ' digit from the sorted list of length ' + (tail_length + 1) + ','
-    + '<br/>'
-    + 'because the remaining list of length ' + tail_length
-    + ' can be permuted in ' + tail_permutations + ' ways,'
-    + '<br/>'
-    + 'and promoting from the 1st up to the ' + sdi + ordinal(sdi) + ' digit adds '
-    + sdi + ' * ' + tail_permutations + ' = ' + (sdi * tail_permutations)
-    + ' permutations,'
-    + '<br/>'
-    + 'which takes us (just under target) to permutation number '
-    + (permutation + sdi * tail_permutations) + ','
+    + ((sdi > 0) ? (
+      'first ' + sdi + ' promotions add '
+      + sdi + '*' + tail_permutations + ' = ' + (sdi * tail_permutations)
+      + '<br/>') : '')
+    + 'x [' + getXs(tail_length).join(',') + ']'
+    + ' permutes ' + tail_permutations + ' ways'
     + '</pre>');
 
   $("#working-content").prepend('<pre class="text-right text-muted">'
