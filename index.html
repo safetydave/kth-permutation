@@ -12,16 +12,18 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 <body onLoad="test()">
   <div class="container">
     <div class="row">
       <div class="jumbotron col-xs-12">
         <h1>kth counting-order permutation of the digits 1..9</h1>
-      	<div id="input" class="form-group">
-          <input id="target_input" type="text" class="form-control input- lg text-right input-top-margin" value="100000"></input>
-          <button class="btn btn-primary btn-block input-top-margin" onClick="calculatePermutation()">calculate permutation</button>
-      	</div>
+        <div class="form-group">
+          <label for="target_input">target permutation number</label>
+          <input id="target_input" type="text" class="form-control input-lg text-right" value="100000"></input>
+          <button onclick="calculatePermutation()" class="btn-lg btn-primary btn-block input-top-margin">permute digits</button>
+        </div>
         <div id="output">
         </div>
         <div id="working-content" class="input-top-margin">
@@ -36,5 +38,12 @@
     </div>
   </div>
   <script type="text/javascript" src="script.js"></script>
+  <script>
+    $("#target_input").keyup(function (e) {
+        if (e.keyCode == 13) {
+            calculatePermutation();
+        }
+    });
+  </script>
 </body>
 </html>
